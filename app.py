@@ -9,7 +9,6 @@ import os
 # --- Autenticación Simple ---
 password = st.sidebar.text_input("🔑 Contraseña de Acceso", type="password")
 
-pass=""
 if "PASS" in st.secrets:
     pass = st.secrets["PASS"]
 
