@@ -5,26 +5,6 @@ import pandas as pd
 import json
 import time
 
-from pyngrok import ngrok # <--- Agrega esto
-
-# --- Configuración del Túnel ---
-# Esto evita que se abra el túnel cada vez que tocas un botón, solo al inicio
-if "ngrok_url" not in st.session_state:
-    # Cierra túneles previos si quedaron colgados
-    ngrok.kill()
-    
-    # Abre el túnel en el puerto 8501 (donde corre Streamlit)
-    # Nota: ngrok requiere un token ahora, si falla, ver paso extra abajo.
-    try:
-        public_url = ngrok.connect(8501, "http")
-        st.session_state.ngrok_url = public_url
-    except Exception as e:
-        st.session_state.ngrok_url = f"Error: {e}"
-
-# Muestra el link en la barra lateral
-with st.sidebar:
-    st.success(f"📱 Link para Móvil: {st.session_state.ngrok_url}")
-
 
 # --- Configuración de la Página ---
 st.set_page_config(
