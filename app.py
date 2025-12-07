@@ -36,9 +36,9 @@ st.set_page_config(
 
 # --- Sidebar para Configuración ---
 with st.sidebar:
-    st.header("⚙️ Configuración")
-    api_key = st.text_input("Pega tu Google API Key aquí:", type="password")
-    st.info("Obtén tu clave gratis en aistudio.google.com")
+    #st.header("⚙️ Configuración")
+    #api_key = st.text_input("Pega tu Google API Key aquí:", type="password")
+    #st.info("Obtén tu clave gratis en aistudio.google.com")
     
     st.divider()
     st.write("### Instrucciones:")
