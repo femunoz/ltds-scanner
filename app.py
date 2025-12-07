@@ -4,18 +4,28 @@ from PIL import Image
 import pandas as pd
 import json
 import time
+import os
 
-# Configuración de la API Key
-# Primero intenta leer desde los Secretos de Streamlit (Nube)
+# --- Configuración de API Key (Lógica Híbrida) ---
+# 1. Primero intenta buscar en los Secretos de la Nube
 if "GOOGLE_API_KEY" in st.secrets:
     api_key = st.secrets["GOOGLE_API_KEY"]
-else:
-    # Si no encuentra el secreto (ej: estás probando en local), la pide manual o usa variable de entorno
-    api_key = st.sidebar.text_input("Ingresa tu API Key:", type="password")
+    st.sidebar.success("✅ API Key cargada desde secretos") # Mensaje para confirmar que funcionó
 
-# Configurar la librería con la clave obtenida
-if api_key:
-    genai.configure(api_key=api_key)
+# 2. Si no, la pide manual (para cuando pruebas en local sin secretos)
+else:
+    api_key = st.sidebar.text_input("Pega tu Google API Key aquí:", type="password")
+
+# --- Validación ---
+if not api_key:
+    st.warning("⚠️ Necesitas una API Key para continuar.")
+    st.stop() # Detiene la app aquí si no hay clave
+
+genai.configure(api_key=api_key)
+
+
+#############
+
 
 # --- Configuración de la Página ---
 st.set_page_config(
