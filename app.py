@@ -9,11 +9,11 @@ import os
 # --- Autenticación Simple ---
 password = st.sidebar.text_input("🔑 Contraseña de Acceso", type="password")
 
-pass=""
-if "PASS" in st.secrets:
-    pass = st.secrets["PASS"]
+#pass=""
+#if "PASS" in st.secrets:
+#    pass = st.secrets["PASS"]
 
-if password != pass: # Cambia esto por una contraseña que solo tú sepas
+if password != "ltds2005": # Cambia esto por una contraseña que solo tú sepas
     st.warning("⛔ Esta herramienta es de uso interno. Ingresa la contraseña para continuar.")
     st.stop() # Detiene la ejecución del resto del código aquí
 
