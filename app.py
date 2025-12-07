@@ -13,7 +13,7 @@ pass=""
 if "PASS" in st.secrets:
     pass = st.secrets["PASS"]
 
-if password != "ltds2025": # Cambia esto por una contraseña que solo tú sepas
+if password != pass: # Cambia esto por una contraseña que solo tú sepas
     st.warning("⛔ Esta herramienta es de uso interno. Ingresa la contraseña para continuar.")
     st.stop() # Detiene la ejecución del resto del código aquí
 
