@@ -6,6 +6,15 @@ import json
 import time
 import os
 
+# --- Autenticación Simple ---
+password = st.sidebar.text_input("🔑 Contraseña de Acceso", type="password")
+
+if password != "ltds191012": # Cambia esto por una contraseña que solo tú sepas
+    st.warning("⛔ Esta herramienta es de uso interno. Ingresa la contraseña para continuar.")
+    st.stop() # Detiene la ejecución del resto del código aquí
+
+# --- Si la contraseña es correcta, el código sigue abajo ---
+
 # --- Configuración de API Key (Lógica Híbrida) ---
 # 1. Primero intenta buscar en los Secretos de la Nube
 if "GOOGLE_API_KEY" in st.secrets:
