@@ -5,6 +5,73 @@ import pandas as pd
 import json
 import time
 import os
+import io
+
+# --- FUNCIÓN DE COMPRESIÓN ---
+def comprimir_imagen(archivo_imagen, ancho_maximo=1024):
+    """
+    Recibe un archivo subido, reduce su tamaño manteniendo la proporción
+    y devuelve los bytes listos para el procesador de IA.
+    """
+    # 1. Abrir la imagen con Pillow
+    imagen = Image.open(archivo_imagen)
+    
+    # 2. Calcular si es necesario redimensionar
+    if imagen.width > ancho_maximo:
+        # Calcular el ratio para no deformar la imagen
+        ratio = ancho_maximo / float(imagen.width)
+        nuevo_alto = int((float(imagen.height) * float(ratio)))
+        
+        # 3. Redimensionar (LANCZOS es un filtro de alta calidad)
+        imagen = imagen.resize((ancho_maximo, nuevo_alto), Image.Resampling.LANCZOS)
+    
+    # 4. Convertir de nuevo a Bytes (como si fuera un archivo)
+    # Esto es necesario porque tu detector espera un "archivo", no un objeto imagen
+    img_byte_arr = io.BytesIO()
+    # Convertimos a JPEG (más ligero que PNG) y calidad 85 (indistinguible al ojo)
+    imagen.save(img_byte_arr, format='JPEG', quality=85) 
+    img_byte_arr.seek(0) # Rebobinar al inicio del archivo
+    
+    return img_byte_arr
+
+# --- TU INTERFAZ STREAMLIT ---
+st.title("🧙‍♂️ LTDS Scanner: Detector de Cartas")
+
+uploaded_files = st.file_uploader("Sube fotos de tus cartas", 
+                                  type=['jpg', 'png', 'jpeg'], 
+                                  accept_multiple_files=True)
+
+if uploaded_files:
+    if st.button("Analizar Imágenes"):
+        st.write("---")
+        progress_bar = st.progress(0)
+        
+        for i, uploaded_file in enumerate(uploaded_files):
+            # AQUI OCURRE LA MAGIA
+            with st.status(f"Procesando {uploaded_file.name}...", expanded=False) as estado:
+                
+                # Paso 1: Comprimir antes de enviar a la IA
+                st.write("📉 Reduciendo tamaño...")
+                imagen_optimizada = comprimir_imagen(uploaded_file)
+                
+                # Paso 2: Tu función de detección (simulada aquí)
+                # OJO: Aquí llamas a tu función real pasándole 'imagen_optimizada'
+                st.write("🧠 Analizando con IA...")
+                # cartas_detectadas = tu_funcion_detectora(imagen_optimizada) 
+                
+                estado.update(label=f"✅ {uploaded_file.name} listo!", state="complete")
+            
+            # Actualizar barra de progreso
+            progress_bar.progress((i + 1) / len(uploaded_files))
+            
+        st.success("¡Proceso completado! Descarga tu CSV abajo.")
+
+
+
+
+
+
+
 
 # --- Autenticación Simple ---
 password = st.sidebar.text_input("🔑 Contraseña de Acceso", type="password")
