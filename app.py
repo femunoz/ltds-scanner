@@ -53,7 +53,7 @@ def detectar_con_ia(imagen_pil):
 
     try:
         # Usamos el modelo Flash que es rápido y barato
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
 
         # El Prompt es la "instrucción" para la IA
         prompt = """
